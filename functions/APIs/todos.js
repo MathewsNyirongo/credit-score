@@ -50,5 +50,41 @@ exports.postOneTodo = (request, response) => {
     .catch((error) => {
         response.status(500).json({ error: 'Something went wrong' });
         console.error(error);
+    });
+};
+
+exports.deleteTodo = (request, response) => {
+    const doc = db.doc(`/todos/${request.params.todoId}`);
+    doc
+        .get()
+        .then((document) => {
+            if (!document.exists) {
+                return response.status(404).json({ error: 'Todo not found' });
+            }
+            return doc.delete();
+        })
+        .then(() => {
+            response.json({ message: 'Deleted successfully' });
+        })
+        .catch((error) => {
+            console.error(error);
+            return response.status(500).json({ error: error.code });
+        });
+};
+
+exports.editTodo = (request, response) => {
+    if (request.body.todoId || request.body.createdAt) {
+        response.status(403).json({ message: 'Not allowed to edit' });
+    }
+    let doc = db.collection('todos').doc(`${request.params.todoId}`);
+    doc.update(request.body)
+    .then(() => {
+        response.json({ message: 'Updated successfully' });
     })
-}
+    .catch((error) => {
+        console.log(error);
+        return response.status(500).json({
+            error: error.code
+        });
+    });
+};
