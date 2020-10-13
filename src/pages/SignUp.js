@@ -50,8 +50,9 @@ const SignUp = () => {
     
     const handleChange = (event) => {
         setUserDetails({
-            ...userDetails, [event.target.name]: [event.target.value]
-        });
+            ...userDetails, [event.target.name]: event.target.value
+		});
+		console.log(userDetails);
     };
 
     const handleSubmit = (event) => {
@@ -61,15 +62,16 @@ const SignUp = () => {
         });
 
         const newUserData = {
-			firstName: userDetails.firstName[0],
-			lastName: userDetails.lastName[0],
-			phoneNumber: userDetails.phoneNumber[0],
-			country: userDetails.country[0],
-			username: userDetails.username[0],
-			email: userDetails.email[0],
-			password: userDetails.password[0],
-			confirmPassword: userDetails.confirmPassword[0]
-        };
+			firstName: userDetails.firstName,
+			lastName: userDetails.lastName,
+			phoneNumber: userDetails.phoneNumber,
+			country: userDetails.country,
+			username: userDetails.username,
+			email: userDetails.email,
+			password: userDetails.password,
+			confirmPassword: userDetails.confirmPassword
+		};
+		
         Axios.post(`${AppConstants.apiBaseUrl}/users/signup`, newUserData)
         .then(res => {
             localStorage.setItem("AuthToken", res.data.token);
