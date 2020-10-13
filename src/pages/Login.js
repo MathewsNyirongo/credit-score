@@ -3,6 +3,7 @@ import { LockOutlined } from '@material-ui/icons';
 import Axios from 'axios';
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import { AppConstants } from '../constants/Constants';
 const useStyles = makeStyles((theme) => ({
     paper: {
         marginTop: theme.spacing(8),
@@ -46,7 +47,7 @@ const Login = () => {
             email: email,
             password: password
         };
-        Axios.post('https://us-central1-credit-score-app-mcn95.cloudfunctions.net/api/login', userData).then(res => {
+        Axios.post(`${AppConstants.apiBaseUrl}/users/login`, userData).then(res => {
             localStorage.setItem('AuthToken', `Bearer ${res.data.token}`);
             setLoading(false);
             history.push("/");
