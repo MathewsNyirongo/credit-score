@@ -1,6 +1,9 @@
 const functions = require('firebase-functions');
 const app = require('express')();
+const cors = require('cors');
 const auth = require('./utils/auth');
+
+app.use(cors());
 
 const {
     getAllTodos,
@@ -28,4 +31,5 @@ app.post('/users/signup', signUpUser);
 app.post('/users/image', auth, uploadProfilePhoto);
 app.get('/user', auth, getUserDetails);
 app.put('/user', auth, updateUserDetails);
+
 exports.api = functions.https.onRequest(app);
