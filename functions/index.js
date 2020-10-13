@@ -31,4 +31,5 @@ app.post('/users/signup', signUpUser);
 app.post('/users/image', auth, uploadProfilePhoto);
 app.get('/user', auth, getUserDetails);
 app.put('/user', auth, updateUserDetails);
+
 exports.api = functions.https.onRequest(app);
