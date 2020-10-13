@@ -122,7 +122,7 @@ const Home = () => {
 				errorMessage: 'Error in retrieving data'
 			});
 		});
-	}, []);
+	}, [history, state]);
 
     return (
         <div className={classes.root}>

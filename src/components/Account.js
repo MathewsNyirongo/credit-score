@@ -179,7 +179,7 @@ const Account = () => {
                 erroMessage: 'Error in retrieving data'
             });
         });
-    }, []);
+    }, [history, responses, userDetails]);
 
     if (responses.uiLoading === true) {
         return (
