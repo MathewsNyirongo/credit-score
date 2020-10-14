@@ -6,6 +6,8 @@ import { useHistory } from 'react-router-dom';
 import { AppConstants } from '../constants/Constants';
 import { authMiddleWare } from '../utils/auth';
 import clsx from 'clsx';
+import DateMoment from '@date-io/moment';
+import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 
 const useStyles = makeStyles((theme) => ({
     content: {
@@ -58,6 +60,53 @@ const Todo = () => {
     let history = useHistory();
     const classes = useStyles();
 
+    const [creditCalculationDetails, setCreditCalculationDetails] = useState({
+        age: null,
+        phoneNumber: null,
+        monthlyIncome: null,
+        monthlyExpense: null,
+        numberOfNewCreditCards: null,
+        loansIn2years: null,
+        firstCreditCardYear: null,
+        totalCreditCardAmount: null,
+        currentCreditCardBalance: null,
+        countOfLatePayments1: null,
+        countOfLatePayments2: null,
+        countOfLatePayments3: null,
+        cardUsedLong: null,
+        cardMix: {
+            card: {
+                used: false,
+                numberOfCredits: null,
+                numberOfYears: null
+            },
+            car: {
+                used: false,
+                numberOfCredits: null,
+                numberOfYears: null
+            },
+            studies: {
+                used: false,
+                numberOfCredits: null,
+                numberOfYears: null
+            },
+            home: {
+                used: false,
+                numberOfCredits: null,
+                numberOfYears: null
+            },
+            peronal: {
+                used: false,
+                numberOfCredits: null,
+                numberOfYears: null
+            },
+            other: {
+                used: false,
+                numberOfCredits: null,
+                numberOfYears: null
+            }
+        }
+    })
     const [userDetails, setUserDetails] = useState({
         firstName: null,
 		lastName: null,
@@ -80,6 +129,13 @@ const Todo = () => {
     const handleChange = (e) => {
         setUserDetails({
             ...userDetails,
+            [e.target.name]: e.target.value
+        });
+    };
+    
+    const handleChangeOnCredit = (e) => {
+        setCreditCalculationDetails({
+            ...creditCalculationDetails,
             [e.target.name]: e.target.value
         });
 	};
@@ -189,76 +245,21 @@ const Todo = () => {
             <main className={classes.content}>
                 <div className={classes.toolbar} />
                 <Card className={clsx(classes.root, classes)}>
-                    <CardContent>
-                        <div className={classes.details}>
-                            <div>
-                                <Typography className={classes.locationText} gutterBottom variant="h4">
-                                    {userDetails.firstName} {userDetails.lastName}
-                                </Typography>
-                                <Button
-                                    variant="outlined"
-                                    color="primary"
-                                    type="submit"
-                                    size="small"
-                                    startIcon={<CloudUpload />}
-                                    className={classes.uploadButton}
-                                    onClick={profilePictureHandler}
-                                >
-                                    Upload Photo
-                                </Button>
-                                <input type="file" onChange={handleImageChange} />
-                                {responses.imageError ? (
-                                    <div className={classes.customError}>
-                                        {' '}
-                                        Wrong Image Format || Supported Format are PNG and JPG
-                                    </div>
-                                ) : (
-                                    false
-                                )}
-                            </div>
-                        </div>
-                        <div className={classes.progress} />
-                    </CardContent>
-                    <Divider />
-                </Card>
-                <br />
-                <Card className={clsx(classes.root, classes)}>
                     <form autoComplete="off" noValidate>
-                        <Divider />
                         <CardContent>
+                            <Typography>Personal Details</Typography>
+                            <br />
                             <Grid container spacing={3}>
                                 <Grid item md={6} xs={12}>
                                     <TextField
                                         fullWidth
-                                        label="First name"
+                                        type="number"
+                                        label="Age"
                                         margin="dense"
-                                        name="firstName"
+                                        name="age"
                                         variant="outlined"
-                                        value={userDetails.firstName}
-                                        onChange={handleChange}
-                                    />
-                                </Grid>
-                                <Grid item md={6} xs={12}>
-                                    <TextField
-                                        fullWidth
-                                        label="Last name"
-                                        margin="dense"
-                                        name="lastName"
-                                        variant="outlined"
-                                        value={userDetails.lastName}
-                                        onChange={handleChange}
-                                    />
-                                </Grid>
-                                <Grid item md={6} xs={12}>
-                                    <TextField
-                                        fullWidth
-                                        label="Email"
-                                        margin="dense"
-                                        name="email"
-                                        variant="outlined"
-                                        disabled={true}
-                                        value={userDetails.email}
-                                        onChange={handleChange}
+                                        value={creditCalculationDetails.age}
+                                        onChange={handleChangeOnCredit}
                                     />
                                 </Grid>
                                 <Grid item md={6} xs={12}>
@@ -266,35 +267,139 @@ const Todo = () => {
                                         fullWidth
                                         label="Phone Number"
                                         margin="dense"
-                                        name="phone"
-                                        type="text"
+                                        name="phoneNmber"
+                                        disabled
                                         variant="outlined"
-                                        disabled={true}
                                         value={userDetails.phoneNumber}
                                         onChange={handleChange}
                                     />
                                 </Grid>
+                            </Grid>
+                            <br />
+                            <Typography>Other Details</Typography>
+                            <br />
+                            <Grid container spacing={3}>
                                 <Grid item md={6} xs={12}>
                                     <TextField
                                         fullWidth
-                                        label="User Name"
+                                        label="Monthly Income"
+                                        type="number"
                                         margin="dense"
-                                        name="userHandle"
-                                        disabled={true}
+                                        name="monthlyIncome"
                                         variant="outlined"
-                                        value={userDetails.username}
-                                        onChange={handleChange}
+                                        value={creditCalculationDetails.monthlyIncome}
+                                        onChange={handleChangeOnCredit}
                                     />
                                 </Grid>
                                 <Grid item md={6} xs={12}>
                                     <TextField
                                         fullWidth
-                                        label="Country"
+                                        label="Monthly Expense"
+                                        type="number"
                                         margin="dense"
-                                        name="country"
+                                        name="monthlyExpense"
                                         variant="outlined"
-                                        value={userDetails.country}
-                                        onChange={handleChange}
+                                        value={creditCalculationDetails.monthlyExpense}
+                                        onChange={handleChangeOnCredit}
+                                    />
+                                </Grid>
+                                <Grid item md={6} xs={12}>
+                                    <TextField
+                                        fullWidth
+                                        label="Number of New Credit Cards"
+                                        type="number"
+                                        margin="dense"
+                                        name="numberOfNewCreditCards"
+                                        variant="outlined"
+                                        value={creditCalculationDetails.numberOfNewCreditCards}
+                                        onChange={handleChangeOnCredit}
+                                    />
+                                </Grid>
+                                <Grid item md={6} xs={12}>
+                                    <TextField
+                                        fullWidth
+                                        label="Loan in 2 Years"
+                                        type="number"
+                                        margin="dense"
+                                        name="loansIn2years"
+                                        variant="outlined"
+                                        value={creditCalculationDetails.loansIn2years}
+                                        onChange={handleChangeOnCredit}
+                                    />
+                                </Grid>
+                                <Grid item md={6} xs={12}>
+                                    <MuiPickersUtilsProvider utils={DateMoment}>
+                                        <DatePicker
+                                            fullWidth
+                                            views={['year']}
+                                            label="First Credit Card Year"
+                                            name="firstCreditCardYear"
+                                            variant="inline"
+                                            autoOk
+                                            disableFuture
+                                            value={creditCalculationDetails.firstCreditCardYear}
+                                            onChange={value => setCreditCalculationDetails({...creditCalculationDetails, firstCreditCardYear: value})}
+                                        />
+                                    </MuiPickersUtilsProvider>
+                                </Grid>
+                                <Grid item md={6} xs={12}>
+                                    <TextField
+                                        fullWidth
+                                        label="Total Credit Amount"
+                                        type="number"
+                                        margin="dense"
+                                        name="totalCreditCardAmount"
+                                        variant="outlined"
+                                        value={creditCalculationDetails.totalCreditCardAmount}
+                                        onChange={handleChangeOnCredit}
+                                    />
+                                </Grid>
+                                <Grid item md={6} xs={12}>
+                                    <TextField
+                                        fullWidth
+                                        label="Current Credit Balance"
+                                        type="number"
+                                        margin="dense"
+                                        name="currentCreditCardBalance"
+                                        variant="outlined"
+                                        value={creditCalculationDetails.currentCreditCardBalance}
+                                        onChange={handleChangeOnCredit}
+                                    />
+                                </Grid>
+                                <Grid item md={6} xs={12}>
+                                    <TextField
+                                        fullWidth
+                                        label="Count of Late Payments[31-59 years]"
+                                        type="number"
+                                        margin="dense"
+                                        name="countOfLatePayments1"
+                                        variant="outlined"
+                                        value={creditCalculationDetails.countOfLatePayments1}
+                                        onChange={handleChangeOnCredit}
+                                    />
+                                </Grid>
+                                <Grid item md={6} xs={12}>
+                                    <TextField
+                                        fullWidth
+                                        label="Count of Late Payments[60-89 years]"
+                                        type="number"
+                                        margin="dense"
+                                        name="countOfLatePayments2"
+                                        variant="outlined"
+                                        value={creditCalculationDetails.countOfLatePayments2}
+                                        onChange={handleChangeOnCredit}
+                                    />
+                                </Grid>
+                                <Grid item md={6} xs={12}>
+                                    <TextField
+                                        fullWidth
+                                        label="Count of Late Payments[Above 90 years]"
+                                        type="number"
+                                        margin="dense"
+                                        name="countOfLatePayments3"
+                                        variant="outlined"
+                                        value={creditCalculationDetails.countOfLatePayments3}
+                                        onChange={handleChangeOnCredit}
                                     />
                                 </Grid>
                             </Grid>
@@ -316,7 +421,7 @@ const Todo = () => {
                         !userDetails.country
                     }
                 >
-                    Save details
+                    Calculate
                     {responses.buttonLoading && <CircularProgress size={30} className={classes.progess} />}
                 </Button>
             </main>

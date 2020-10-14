@@ -161,7 +161,7 @@ const Home = () => {
 									{' '}
 									<Notes />{' '}
 								</ListItemIcon>
-								<ListItemText primary="Todo" />
+								<ListItemText primary="Credit Score Calculator" />
 							</ListItem>
 
 							<ListItem button key="Account" onClick={loadAccountPage}>
