@@ -111,11 +111,9 @@ const Home = () => {
 				profilePicture: response.data.userCredentials.imageUrl
 			});
 		}).catch(error => {
-			console.log(error);
 			if (error.response.status === 403) {
 				history.push('/login');
 			}
-			console.log(error);
 			setState({
 				...state,
 				errorMessage: 'Error in retrieving data'

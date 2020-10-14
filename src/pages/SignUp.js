@@ -81,7 +81,6 @@ const SignUp = () => {
             history.push("/");
         })
         .catch(err => {
-            console.error(err);
             setResponses({
                 ...responses, errors: err, loading: false
             });

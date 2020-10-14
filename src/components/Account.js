@@ -115,7 +115,6 @@ const Account = () => {
 			if (error.response?.status === 403) {
 				history.push('/login');
 			}
-			console.log(error);
 			setResponses({
 				...responses,
 				uiLoading: false,
@@ -145,7 +144,6 @@ const Account = () => {
 			if (error.response?.status === 403) {
 				history.push('/login');
 			}
-			console.log(error);
 			setResponses({...responses, buttonLoading: false});
 		});
 	};
@@ -172,7 +170,6 @@ const Account = () => {
             if (err.response?.status === 403) {
                 history.push("/login");
             }
-            console.log(err);
             setResponses({
                 ...responses,
                 erroMessage: 'Error in retrieving data'
