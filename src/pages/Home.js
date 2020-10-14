@@ -99,7 +99,6 @@ const Home = () => {
 		const authToken = localStorage.getItem('AuthToken');
 		Axios.defaults.headers.common['Authorization'] = authToken;
 		Axios.get(`${AppConstants.apiBaseUrl}/user`).then(response => {
-			console.log(response);
 			setState({
 				...state,
 				firstName: response.data.userCredentials.firstName,

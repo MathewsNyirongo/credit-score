@@ -142,7 +142,7 @@ const Account = () => {
 		Axios.put(`${AppConstants.apiBaseUrl}/user`, formRequest).then(() => {
 			setResponses({...responses, buttonLoading: false});
 		}).catch(error => {
-			if (error.response.status === 403) {
+			if (error.response?.status === 403) {
 				history.push('/login');
 			}
 			console.log(error);
@@ -155,7 +155,6 @@ const Account = () => {
         const authToken = localStorage.getItem('AuthToken');
         Axios.defaults.headers.common = { Authorization: authToken };
         Axios.get(`${AppConstants.apiBaseUrl}/user`).then(res => {
-            console.log(res);
             setUserDetails({
                 ...userDetails,
                 firstName: res.data.userCredentials.firstName,
@@ -170,7 +169,7 @@ const Account = () => {
                 uiLoading: false
             });
         }).catch(err => {
-            if (err.status === 403) {
+            if (err.response?.status === 403) {
                 history.push("/login");
             }
             console.log(err);
@@ -273,7 +272,7 @@ const Account = () => {
 											label="Phone Number"
 											margin="dense"
 											name="phone"
-											type="number"
+											type="text"
 											variant="outlined"
 											disabled={true}
 											value={userDetails.phoneNumber}
