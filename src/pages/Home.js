@@ -99,7 +99,6 @@ const Home = () => {
 		const authToken = localStorage.getItem('AuthToken');
 		Axios.defaults.headers.common['Authorization'] = authToken;
 		Axios.get(`${AppConstants.apiBaseUrl}/user`).then(response => {
-			console.log(response);
 			setState({
 				...state,
 				firstName: response.data.userCredentials.firstName,
@@ -112,11 +111,9 @@ const Home = () => {
 				profilePicture: response.data.userCredentials.imageUrl
 			});
 		}).catch(error => {
-			console.log(error);
 			if (error.response.status === 403) {
 				history.push('/login');
 			}
-			console.log(error);
 			setState({
 				...state,
 				errorMessage: 'Error in retrieving data'
@@ -164,7 +161,7 @@ const Home = () => {
 									{' '}
 									<Notes />{' '}
 								</ListItemIcon>
-								<ListItemText primary="Todo" />
+								<ListItemText primary="Credit Score Calculator" />
 							</ListItem>
 
 							<ListItem button key="Account" onClick={loadAccountPage}>
