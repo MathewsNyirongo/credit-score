@@ -11,9 +11,12 @@ import {
 	Toolbar,
 	Avatar,
 	AppBar,
-	CssBaseline
+	CssBaseline,
+	useTheme,
+	Hidden,
+	IconButton
 } from '@material-ui/core';
-import { AccountBox, ExitToApp, Notes } from '@material-ui/icons';
+import { AccountBox, ExitToApp, Notes, Menu } from '@material-ui/icons';
 import Axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
@@ -28,11 +31,23 @@ const useStyles = makeStyles((theme) => ({
 		display: 'flex'
 	},
 	appBar: {
-		zIndex: theme.zIndex.drawer + 1
+		zIndex: theme.zIndex.drawer + 1,
+		[theme.breakpoints.up('sm')]: {
+			width: `calc(100% - ${drawerWidth}px)`,
+			marginLeft: drawerWidth
+		}
+	},
+	menuButton: {
+		marginRight: theme.spacing(2),
+		[theme.breakpoints.up('sm')]: {
+			display: 'none'
+		}
 	},
 	drawer: {
-		width: drawerWidth,
-		flexShrink: 0
+		[theme.breakpoints.up('sm')]: {
+			width: drawerWidth,
+			flexShrink: 0
+		}
 	},
 	drawerPaper: {
 		width: drawerWidth
@@ -59,10 +74,14 @@ const useStyles = makeStyles((theme) => ({
 	toolbar: theme.mixins.toolbar
 }));
 
-const Home = () => {
+const Home = (props) => {
+	const { window } = props;
 	const classes = useStyles();
+	const theme = useTheme();
 	let history = useHistory();
 	
+	const [mobileOpen, setMobileOpen] = useState(false);
+
 	const [state, setState] = useState({
 		firstName: null,
 		lastName: null,
@@ -94,6 +113,7 @@ const Home = () => {
 		localStorage.removeItem('AuthToken');
 		history.push('/login');
 	}
+
 	useEffect(() => {
 		authMiddleWare(history);
 		const authToken = localStorage.getItem('AuthToken');
@@ -121,6 +141,8 @@ const Home = () => {
 		});
 	}, []);
 
+	const container = window !== undefined ? () => window().document.body : undefined;
+
     return (
         <div className={classes.root}>
 			{state.uiLoading ? (
@@ -133,54 +155,118 @@ const Home = () => {
 					<CssBaseline />
 					<AppBar position="fixed" className={classes.appBar}>
 						<Toolbar>
+							<IconButton
+								color="inherit"
+								aria-label="open drawer"
+								edge="start"
+								onClick={e => setMobileOpen(!mobileOpen)}
+								className={classes.menuButton}
+							>
+								<Menu />
+							</IconButton>
 							<Typography variant="h6" noWrap>
 								Credit Score Application
 							</Typography>
 						</Toolbar>
 					</AppBar>
-					<Drawer
-						className={classes.drawer}
-						variant="permanent"
-						classes={{
-							paper: classes.drawerPaper
-						}}
-					>
-						<div className={classes.toolbar} />
-						<Divider />
-						<center>
-							<Avatar src={state.profilePicture} className={classes.avatar} />
-							<p>
-								{' '}
-								{state.firstName} {state.lastName}
-							</p>
-						</center>
-						<Divider />
-						<List>
-							<ListItem button key="Todo" onClick={loadTodoPage}>
-								<ListItemIcon>
-									{' '}
-									<Notes />{' '}
-								</ListItemIcon>
-								<ListItemText primary="Credit Score Calculator" />
-							</ListItem>
+					<nav className={classes.drawer} aria-label="mailbox folders">
+						<Hidden smUp implementation="css">
+							<Drawer
+								container={container}
+								anchor={theme.direction === 'rtl' ? 'right' : 'left'}
+								open={mobileOpen}
+								onClose={e => setMobileOpen(!mobileOpen)}
+								variant="temporary"
+								classes={{
+									paper: classes.drawerPaper
+								}}
+								ModalProps={{
+									keepMounted: false
+								}}
+							>
+								<div className={classes.toolbar} />
+								<Divider />
+								<center>
+									<Avatar src={state.profilePicture} className={classes.avatar} />
+									<p>
+										{' '}
+										{state.firstName} {state.lastName}
+									</p>
+								</center>
+								<Divider />
+								<List>
+									<ListItem button key="Todo" onClick={loadTodoPage}>
+										<ListItemIcon>
+											{' '}
+											<Notes />{' '}
+										</ListItemIcon>
+										<ListItemText primary="Credit Score Calculator" />
+									</ListItem>
 
-							<ListItem button key="Account" onClick={loadAccountPage}>
-								<ListItemIcon>
-									{' '}
-									<AccountBox />{' '}
-								</ListItemIcon>
-								<ListItemText primary="Account" />
-							</ListItem>
+									<ListItem button key="Account" onClick={loadAccountPage}>
+										<ListItemIcon>
+											{' '}
+											<AccountBox />{' '}
+										</ListItemIcon>
+										<ListItemText primary="Account" />
+									</ListItem>
 
-							<ListItem button key="Logout" onClick={logoutHandler}>
-								<ListItemIcon>
-									{' '}
-									<ExitToApp />{' '}
-								</ListItemIcon>
-								<ListItemText primary="Logout" />
-							</ListItem>
-						</List>
-					</Drawer>
+									<ListItem button key="Logout" onClick={logoutHandler}>
+										<ListItemIcon>
+											{' '}
+											<ExitToApp />{' '}
+										</ListItemIcon>
+										<ListItemText primary="Logout" />
+									</ListItem>
+								</List>
+							</Drawer>
+						</Hidden>
+						<Hidden xsDown implementation="css">
+							<Drawer
+								className={classes.drawer}
+								variant="permanent"
+								classes={{
+									paper: classes.drawerPaper
+								}}
+							>
+								<div className={classes.toolbar} />
+								<Divider />
+								<center>
+									<Avatar src={state.profilePicture} className={classes.avatar} />
+									<p>
+										{' '}
+										{state.firstName} {state.lastName}
+									</p>
+								</center>
+								<Divider />
+								<List>
+									<ListItem button key="Todo" onClick={loadTodoPage}>
+										<ListItemIcon>
+											{' '}
+											<Notes />{' '}
+										</ListItemIcon>
+										<ListItemText primary="Credit Score Calculator" />
+									</ListItem>
+
+									<ListItem button key="Account" onClick={loadAccountPage}>
+										<ListItemIcon>
+											{' '}
+											<AccountBox />{' '}
+										</ListItemIcon>
+										<ListItemText primary="Account" />
+									</ListItem>
+
+									<ListItem button key="Logout" onClick={logoutHandler}>
+										<ListItemIcon>
+											{' '}
+											<ExitToApp />{' '}
+										</ListItemIcon>
+										<ListItemText primary="Logout" />
+									</ListItem>
+								</List>
+							</Drawer>
+						</Hidden>
+					</nav>
 
 					<div>{state.render ? <Account /> : <Todo />}</div>
 				</div>
